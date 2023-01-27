@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.http import Http404
+from rest_framework import status
 
 
 # Create your views here.
@@ -15,7 +16,6 @@ class register(APIView):
     def post(self,request,format=None):
         serializer=UserRegister(data=request.data)
         data={}
-
         if serializer.is_valid():
             account=serializer.save()
             data['response']='registerd'
@@ -25,13 +25,14 @@ class register(APIView):
             data['last_name'] = account.last_name
             token,create =Token.objects.get_or_create(user=account)
             data['token']=token.key
+            return Response(data=serializer.data,status=status.HTTP_200_OK)
         else:
-            data=serializer.errors
+            # data=serializer.errors
+            return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         return Response(data)
 
 class welcome(APIView):
     permission_classes = (IsAuthenticated,)
-
     def get(self,request):
         content = {'user':str(request.user),'userid':str(request.user.id)}
         return Response(content)

@@ -26,8 +26,8 @@ class UserRegister(serializers.ModelSerializer):
 
 
 class UserDataSerializer(serializers.ModelSerializer):
-    firstname = serializers.CharField(max_length=255)
-    lasttname = serializers.CharField(max_length=255)
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
 
     class Meta:
         model = User

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet,GenericViewSet
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import * 
 from . serializer import *
 from rest_framework.mixins import CreateModelMixin,RetrieveModelMixin,DestroyModelMixin,UpdateModelMixin,ListModelMixin
@@ -21,23 +23,15 @@ class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        return super().update(request, *args, **kwargs)
-
-    def destroy(self, request, *args, **kwargs):
-        return super().destroy(request, *args, **kwargs)
-
-
 
 class ProductViewSet(ModelViewSet):
     authentication_classes =[TokenAuthentication]
     permission_classes =[IsAuthenticated]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
+    filter_backends=[DjangoFilterBackend,SearchFilter]
+    filterset_fields =['category__name']
+    search_fields =['name','category__name']
 
 
 
