@@ -29,7 +29,7 @@ class register(APIView):
         else:
             # data=serializer.errors
             return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        return Response(data)
+        # return Response(data)
 
 class welcome(APIView):
     permission_classes = (IsAuthenticated,)
