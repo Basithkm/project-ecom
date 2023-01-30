@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework import status
+
 
 User=get_user_model()
 
@@ -8,6 +10,7 @@ class UserRegister(serializers.ModelSerializer):
     class Meta:
         model = User
         fields=['username','email','password','password2','first_name','last_name']
+        
     def save(self):
         reg = User(
             email=self.validated_data['email'],

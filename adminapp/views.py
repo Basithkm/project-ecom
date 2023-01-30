@@ -47,7 +47,7 @@ class userDetails(APIView):
     def get(self,request,pk,format =None):
         userData = self.get_object(pk)
         serializer = UserDataSerializer(userData)
-        return Response(serializer.data)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
 
     def put(self,request,pk,format = None):
@@ -55,8 +55,8 @@ class userDetails(APIView):
         serializer = UserDataSerializer(userData,data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response({'message':'error','error':serializer.data})
+            return Response(data = serializer.data,status=status.HTTP_200_OK)
+        return Response({'message':'error','error':serializer.data},status=status.HTTP_400_BAD_REQUEST)
 
 
     def delete(self,request,pk,format = None):

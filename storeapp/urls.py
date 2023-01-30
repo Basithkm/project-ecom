@@ -9,5 +9,6 @@ router.register('banner',views.BannerViewSet)
 router.register('category',views.CategoryViewSet)
 router.register('products',views.ProductViewSet)
 router.register('cart',views.CartViewSet)
+router.register('cartitems',views.CartItemsViewStDetails,basename='cart_item')
 
 urlpatterns = router.urls

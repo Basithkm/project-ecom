@@ -42,7 +42,6 @@ class CartViewSet(CreateModelMixin,GenericViewSet,RetrieveModelMixin,DestroyMode
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
 
-
 class CartItemViewSet(ModelViewSet):
     authentication_classes =[TokenAuthentication]
     permission_classes =[IsAuthenticated]
@@ -62,3 +61,11 @@ class CartItemViewSet(ModelViewSet):
 
     def get_queryset(self):
         return CartItem.objects.select_related('product').filter(cart_id =self.kwargs['cart_pk'])
+
+
+class CartItemsViewStDetails(ModelViewSet):
+    authentication_classes =[TokenAuthentication]
+    permission_classes =[IsAuthenticated]
+
+    queryset =CartItem.objects.all()
+    serializer_class=CartItemSerializer

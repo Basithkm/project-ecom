@@ -24,8 +24,8 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ['id','name','image','category','price','offer_price','offer','unit','category_name','last_update']
+
     offer_price = serializers.SerializerMethodField(method_name='calculate_final_price')
-    
     def calculate_final_price(self,product:Product):
         final= product.price * int(product.offer)/ Decimal(100)
         return product.price - final
@@ -37,17 +37,19 @@ class SimpleProductSerializer(serializers.ModelSerializer):
         fields = ['id','name','price','offer','offer_price']
 
     offer_price = serializers.SerializerMethodField(method_name='calculate_final_price')
-
     def calculate_final_price(self,product:Product):
         final= product.price * int(product.offer)/ Decimal(100)
         return product.price - final
+
+# class PriceSerializer(serializers.ModelSerializer):
+    
 
 class CartItemSerializer(serializers.ModelSerializer):
     product =  SimpleProductSerializer()
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self,cart_item:CartItem):
-        return cart_item.quantity * cart_item.product.price
+        return cart_item.quantity * cart_item.product.offer_price
         
     class Meta:
         model=CartItem
@@ -57,18 +59,17 @@ class CartItemSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only = True)
     items = CartItemSerializer(many=True,read_only=True)
-
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self,cart):
-        return sum([item.quantity * item.product.price for item in cart.items.all()])
+        return sum([item.quantity * item.product.offer_price for item in cart.items.all()])
 
     class Meta:
         model = Cart
         fields = ['id','items','total_price']
 
 
-class AddCartSerializer(serializers.ModelSerializer):
+class   AddCartSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField()
 
     def validate_product_id(self,value):
