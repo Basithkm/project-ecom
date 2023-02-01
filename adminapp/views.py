@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from rest_framework.views import APIView
 from .serializer import UserRegister,UserDataSerializer
@@ -16,6 +17,7 @@ class register(APIView):
     def post(self,request,format=None):
         serializer=UserRegister(data=request.data)
         data={}
+
         if serializer.is_valid():
             account=serializer.save()
             data['response']='registerd'
@@ -25,14 +27,14 @@ class register(APIView):
             data['last_name'] = account.last_name
             token,create =Token.objects.get_or_create(user=account)
             data['token']=token.key
-            return Response(data=serializer.data,status=status.HTTP_200_OK)
+
         else:
-            # data=serializer.errors
             return Response(data=serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        # return Response(data)
+        return Response(data)
 
 class welcome(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self,request):
         content = {'user':str(request.user),'userid':str(request.user.id)}
         return Response(content)
@@ -47,7 +49,8 @@ class userDetails(APIView):
     def get(self,request,pk,format =None):
         userData = self.get_object(pk)
         serializer = UserDataSerializer(userData)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+        return Response(serializer.data)
+
 
 
     def put(self,request,pk,format = None):
@@ -55,12 +58,11 @@ class userDetails(APIView):
         serializer = UserDataSerializer(userData,data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(data = serializer.data,status=status.HTTP_200_OK)
-        return Response({'message':'error','error':serializer.data},status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data)
+        return Response({'message':'error','error':serializer.data})
 
 
     def delete(self,request,pk,format = None):
         userData = self.get_object(pk)
         userData.delete()
         return Response({'message':'user deleted'})
-

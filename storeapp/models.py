@@ -45,7 +45,7 @@ class Product(models.Model):
     last_update=models.DateField(auto_now_add=True)
 
     def _get_offer_price(self):
-        final=self.price * int(self.offer)/ Decimal(100)
+        final= self.price * int(self.offer)/ Decimal(100)
         offer_price=self. price - final
         return offer_price
     offer_price=property(_get_offer_price)
@@ -71,3 +71,10 @@ class CartItem(models.Model):
 
 
     
+class Address(models.Model):
+    full_name =models.CharField(max_length=255,blank=False,null=False)
+    mobile_number =models.IntegerField(null=False,blank=False)
+    pincode=models.IntegerField(blank=False,null=False)
+    town =models.TextField(blank=False,null=False)
+    street=models.TextField(blank=False,null=False)
+    land_mark=models.TextField(null=False,blank=False)

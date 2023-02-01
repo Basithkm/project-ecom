@@ -1,16 +1,17 @@
+
+
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from rest_framework import status
-
 
 User=get_user_model()
 
 class UserRegister(serializers.ModelSerializer):
     password2 =serializers.CharField(style={'input_type':'password'},write_only =True)
+
     class Meta:
         model = User
-        fields=['username','email','password','password2','first_name','last_name']
-        
+        fields=['username','password','email','password2','first_name','last_name']
+
     def save(self):
         reg = User(
             email=self.validated_data['email'],
@@ -29,8 +30,8 @@ class UserRegister(serializers.ModelSerializer):
 
 
 class UserDataSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(max_length=255)
-    last_name = serializers.CharField(max_length=255)
+    # firstname = serializers.CharField(max_length=255)
+    # lasttname = serializers.CharField(max_length=255)
 
     class Meta:
         model = User

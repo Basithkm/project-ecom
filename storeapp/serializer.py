@@ -102,3 +102,9 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ['quantity']
+
+
+class AdressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields ='__all__'

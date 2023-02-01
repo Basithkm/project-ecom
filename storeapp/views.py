@@ -69,3 +69,11 @@ class CartItemsViewStDetails(ModelViewSet):
 
     queryset =CartItem.objects.all()
     serializer_class=CartItemSerializer
+
+
+class AddressViewSet(ModelViewSet):
+    authentication_classes =[TokenAuthentication]
+    permission_classes =[IsAuthenticated]
+
+    queryset=Address.objects.all()
+    serializer_class =AdressSerializer
